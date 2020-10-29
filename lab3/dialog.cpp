@@ -8,7 +8,7 @@ int main()
 	Prog3::LogicalElement logicElement(15, 1);
 	int choice = 1, index;
 	short int i;
-	const char* dialog[] = {"1.Redefinition", "2.Print all Klemm", "3.Set new Klemm values with preassigned index", 
+	const char* dialog[] = {"1.Redefinition", "2.Print all Klemm", "3.Set new Klemm values with preassigned number", 
 							"4.Explain Klemm values with preassigned index", "5.Increase connection of Klemm", 
 							"6.Decrease connection of Klemm","7.Add new Klemm", "0.Quit"};
 	const char* errors[] = { "Invalid value ,try again", "Why?", "You know it's never over",
@@ -73,11 +73,11 @@ int main()
 			}
 			break;
 		case 6:
-			std::cout << "Enter index of Klemm to increase connection : " << std::endl;
+			std::cout << "Enter index of Klemm to decrease connection : " << std::endl;
 			if (GetInt(index))
 				std::cout << "Not today." << std::endl;
 			try {
-				logicElement.IncreaseConnection(index);
+				logicElement.DecreaseConnection(index);
 			}
 			catch (std::exception& ex) {
 				std::cout << ex.what() << std::endl;
