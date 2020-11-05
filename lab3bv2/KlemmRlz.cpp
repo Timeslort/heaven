@@ -26,33 +26,12 @@ namespace Prog3 {
 	}
 
 	std::istream& operator>>(std::istream& input, Klemm& inKlm) {
-		char newType[20], newSignal;
-		int newCon;
-		std::cout << "Enter type (output, entrance) : ";
-		input >> newType;
-		input.clear();
-		while (input.get() != '\n');
-		try {
-			inKlm.setType(newType);
-		}
-		catch (std::exception& ex) {
-			std::cout << ex.what() << std::endl;
-			throw std::invalid_argument("Can't do it");
-		}
+		char newSignal;
 
-		std::cout << std::endl << "Enter number of connection for output [0, 3], entrance[0, 1] : ";
-		if (GetInt(newCon))
-			throw std::invalid_argument("Can't do it");
-		try {
-			inKlm.setConnection(newCon);
-		}
-		catch (std::exception& ex) {
-			std::cout << ex.what() << std::endl;
-			throw std::invalid_argument("Can't do it");
-		}
-
-		if (newCon == 0)
+		if (inKlm.connection == 0) {
+			std::cout << "You can't change state sicgnal, when number of connections are zero!" << std::endl;
 			inKlm.signal = 'X';
+		}
 		else {
 			std::cout << std::endl << "Enter signal state (0, 1):" << std::endl;
 			input >> newSignal;
@@ -67,10 +46,7 @@ namespace Prog3 {
 	}
 
 	std::ostream& operator<<(std::ostream& output, const Klemm& outKlm) {
-		output << "Klemm type : " << outKlm.type << std::endl
-			<< "Number of connection : " << outKlm.connection << std::endl
-			<< "Signal state : " << outKlm.signal << std::endl;
-		return output;
+		return outKlm.print(output);
 	}
 
 	void Klemm::setType(char* tp) {
@@ -105,7 +81,7 @@ namespace Prog3 {
 			signal = 'X';
 		}
 		else {
-			if (sig == '1' || sig == '0')
+			if (sig == '1' || sig == '0' || sig == 'X')
 				signal = sig;
 			else
 				throw std::invalid_argument("Invalid signal");
@@ -209,6 +185,13 @@ namespace Prog3 {
 		if (!strcmp(str, eqvl))
 			return SUCCESS;
 		return INCORRECT_ARGUMENT;
+	}
+
+	std::ostream& Klemm::print(std::ostream &output) const{
+		output << "Klemm type : " << type << std::endl
+			<< "Number of connection : " << connection << std::endl
+			<< "Signal state : " << signal << std::endl;
+		return output;
 	}
 
 }//namespace Prog3

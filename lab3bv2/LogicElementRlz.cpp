@@ -70,26 +70,24 @@ namespace Prog3 {
 	}
 
 	std::istream& operator>>(std::istream& input, LogicElement& inEl) {
+
 		for (int i = 0; i < inEl.size; i++) {
-			try {
-				input >> inEl.array[i];
-			}
-			catch (std::exception& ex)
-			{
-				std::cout << ex.what() << std::endl;
+			if (!CorrectString(inEl.array[i].getType(), "entrance")) {
+				try {
+					input >> inEl.array[i];
+				}
+				catch (std::exception& ex)
+				{
+					std::cout << ex.what() << std::endl;
+				}
 			}
 		}
+		inEl.redefinition(inEl);
 		return input;
 	}
 
 	std::ostream& operator<<(std::ostream& output, const LogicElement& outEl) {
-		for (int i = 0; i < outEl.size; i++) {
-			LINE;
-			output << "     Klemm #" << i + 1 << std::endl
-				<< outEl.array[i] << std::endl;;
-		}
-		LINE;
-		return output;
+		return outEl.print(output);
 	}
 
 	void LogicElement::operator()(int num, char* tp, int con, char sig) {
@@ -115,6 +113,7 @@ namespace Prog3 {
 						throw std::invalid_argument("Can't change!");
 					}
 				}
+				redefinition(*this);
 			}
 		else {
 			if (con == 1 || con == 0) {
@@ -129,6 +128,7 @@ namespace Prog3 {
 						throw std::invalid_argument("Can't change!");
 					}
 				}
+				redefinition(*this);
 			}
 		}
 	}
@@ -156,6 +156,7 @@ namespace Prog3 {
 						throw std::invalid_argument("Can't change!");
 					}
 				}
+				redefinition(*this);
 			}
 		else {
 			if (con == 1 || con == 0) {
@@ -170,6 +171,7 @@ namespace Prog3 {
 						throw std::invalid_argument("Can't change!");
 					}
 				}
+				redefinition(*this);
 			}
 			else 
 				throw std::invalid_argument("Can't change!Ivalid values!");
@@ -216,7 +218,7 @@ namespace Prog3 {
 		return *this;
 	}
 
-	void LogicElement::operator+=(char* tp) {
+	LogicElement& LogicElement::operator+=(char* tp) {
 		if (CorrectString("entrance", tp))
 			if (CorrectString("output", tp))
 				throw std::invalid_argument("Invalid type");
@@ -226,6 +228,7 @@ namespace Prog3 {
 				array[size].setType("output");
 				size++;
 				numOut++;
+				redefinition(*this);
 			}
 		else {
 			if (size >= maxSize)
@@ -233,10 +236,12 @@ namespace Prog3 {
 			array[size].setType("entrance");
 			size++;
 			numEntr++;
+			redefinition(*this);
 		}
+		return *this;
 	}
 
-	void LogicElement::operator+=(Klemm& plus) {
+	LogicElement& LogicElement::operator+=(Klemm& plus) {
 		if (CorrectString("entrance", plus.getType()))
 			if (CorrectString("output", plus.getType()))
 				throw std::invalid_argument("Invalid type");
@@ -248,6 +253,7 @@ namespace Prog3 {
 				array[size].setSignal(plus.getSignal());
 				size++;
 				numOut++;
+				redefinition(*this);
 			}
 		else {
 			if (size >= maxSize)
@@ -257,7 +263,31 @@ namespace Prog3 {
 			array[size].setSignal(plus.getSignal());
 			size++;
 			numEntr++;
+			redefinition(*this);
 		}
+		return *this;
+	}
+
+	void LogicElement::increaseConnection(int indx) {
+		try {
+			this->array[indx]++;
+		}
+		catch (std::exception& ex) {
+			std::cout << ex.what() << std::endl;
+			throw std::invalid_argument(" ");
+		}
+		this->redefinition(*this);
+	}
+
+	void LogicElement::decreaseConnection(int indx) {
+		try {
+			this->array[indx]--;
+		}
+		catch (std::exception& ex) {
+			std::cout << ex.what() << std::endl;
+			throw std::invalid_argument(" ");
+		}
+		this->redefinition(*this);
 	}
 
 	void LogicElement::changeSpace(Klemm*& arr) {
@@ -271,6 +301,55 @@ namespace Prog3 {
 			arr[i].setSignal(delArr[i].getSignal());
 		}
 		delete[] delArr;
+	}
+
+	void LogicElement::redefinition(LogicElement &rEl) {
+		register int i;
+		int countZero = 0, countOne = 0, countOutZ = 0, check = -1;
+
+		for (i = 0; i < rEl.size; i++) {
+			if (!CorrectString(rEl.array[i].getType(), "entrance")) {
+				if (rEl.array[i].getSignal() == '1')
+					countOne++;
+				if (rEl.array[i].getSignal() == '0')
+					countZero++;
+			}
+			else {
+				if (rEl.array[i].getSignal() == '0')
+					countOutZ++;
+			}
+		}
+
+		if (countZero == rEl.numEntr && countZero != 0)
+			check = 1;
+		if (countOne)
+			check = 0;
+		if (countZero + countOutZ == rEl.size)
+			check = 2;
+
+		for (i = 0; i < rEl.size; i++) {
+			if (check == 2)
+				rEl.array[i].setSignal('X');
+			else {
+				if (check == 1) {
+					if (!CorrectString(rEl.array[i].getType(), "output"))
+						rEl.array[i].setSignal('1');
+				}
+				else if (check == 0)
+					if (!CorrectString(rEl.array[i].getType(), "output"))
+						rEl.array[i].setSignal('0');
+			}
+		}
+	}
+
+	std::ostream& LogicElement::print(std::ostream& output) const {
+		for (int i = 0; i < size; i++) {
+			LINE;
+			output << "     Klemm #" << i + 1 << std::endl;
+			array[i].Klemm::print(output) << std::endl;
+		}
+		LINE;
+		return output;
 	}
 
 }//namespace Prog3

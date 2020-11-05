@@ -6,9 +6,9 @@
 
 namespace Prog3 {
 	class LogicElement {
+		friend ConstLogicElementIt;
 		friend std::istream& operator>>(std::istream&, LogicElement&);
 		friend std::ostream& operator<<(std::ostream&, const LogicElement&);
-		friend ConstLogicElementIt;
 	public:
 		LogicElement() :size(0), numEntr(0), numOut(0), maxSize(LogicElement::QUOTA), array(new Klemm[LogicElement::QUOTA]) {}
 		LogicElement(const LogicElement&);
@@ -28,11 +28,15 @@ namespace Prog3 {
 		//Seter's
 		void operator()(int num, char* tp, int con, char sig);
 		void operator()(int num, const char* tp, int con, char sig);
+		void increaseConnection(int indx);
+		void decreaseConnection(int indx);
 		//
 		const LogicElement& operator=(const LogicElement&);
 		LogicElement& operator=(LogicElement&&); //перемещеннием
-		void operator+=(char* type);
-		void operator+=(Klemm&);
+		LogicElement& operator+=(char* type);
+		LogicElement& operator+=(Klemm&);
+		//
+		std::ostream& print(std::ostream&) const;
 		//
 		~LogicElement() { delete[] array; }
 	private:
@@ -43,6 +47,7 @@ namespace Prog3 {
 		int maxSize;
 		Klemm* array;
 		void changeSpace(Klemm*& array);
+		void redefinition(LogicElement&);
 	};
 }//namespace Prog3
 #endif

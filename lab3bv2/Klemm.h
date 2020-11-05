@@ -26,6 +26,8 @@ namespace Prog3 {
 		void setType(const char*);
 		void setSignal(char);
 		void setConnection(const int);
+		//
+		std::ostream &print(std::ostream &) const;
 	private:
 		const char* type;
 		char signal;

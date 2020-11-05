@@ -4,6 +4,7 @@
 #include<stdlib.h>
 #include<crtdbg.h>
 
+
 int main() {
 	//_CrtSetBreakAlloc(187);
 	Prog3::LogicElement logicElement(3, 1);
@@ -23,7 +24,6 @@ int main() {
 			<< (*itr) << std::endl;
 		LINE;
 	}
-
 	
 	std::cout << eqvlLogicElement;
 	Prog3::Klemm test;
@@ -97,16 +97,16 @@ int main() {
 				break;
 			}
 			std::cout << "Element have value :" << logicElement[index].getConnection() << std::endl;
-			/*if (logicElement[index].type == Prog3::ENTRANCE && logicElement[index].connection == 1) {
-				std::cout << ("You can't change number of connection, because its max!!!");
-				break;
-			}
-			if (logicElement[index].type == Prog3::OUTPUT && logicElement[index].connection == 3) {
-				std::cout << ("You can't change number of connection, because its max!!!");
-				break;
-			}*/
+			/*		if (logicElement[index].type == Prog3::ENTRANCE && logicElement[index].connection == 1) {
+						std::cout << ("You can't change number of connection, because its max!!!");
+						break;
+					}
+					if (logicElement[index].type == Prog3::OUTPUT && logicElement[index].connection == 3) {
+						std::cout << ("You can't change number of connection, because its max!!!");
+						break;
+						}*/
 			try {
-				++logicElement[index];
+				logicElement.increaseConnection(index);
 			}
 			catch (std::exception& ex) {
 				std::cout << ex.what() << std::endl;
@@ -118,17 +118,17 @@ int main() {
 			if (Prog3::GetInt(index)) {
 				std::cout << "Not today." << std::endl;
 				break;
-			}
+			}/*
 			std::cout << "Element have value :" << logicElement[index].getConnection() << std::endl;
-			/*if (logicElement[index].connection == 0) {
+			if (logicElement[index].connection == 0) {
 				std::cout << ("You can't change number of connection, because its minimum!!!");
 				break;
 			}*/
 			try {
-				--logicElement[index];
+					logicElement.decreaseConnection(index);
 			}
 			catch (std::exception& ex) {
-				std::cout << ex.what() << std::endl;
+					std::cout << ex.what() << std::endl;
 			}
 			std::cout << "New number of connection is " << logicElement[index].getConnection() << std::endl;
 			break;
@@ -144,8 +144,9 @@ int main() {
 				std::cout << ex.what() << std::endl;
 			}
 			break;
-		}
+			}
 	}
 	_CrtDumpMemoryLeaks();
 	return 0;
 }
+	
