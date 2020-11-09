@@ -50,8 +50,8 @@ namespace Prog3 {
 	}
 
 	void Klemm::setType(char* tp) {
-		if (CorrectString("entrance", tp))
-			if (CorrectString("output", tp))
+		if (InCorrectString("entrance", tp))
+			if (InCorrectString("output", tp))
 				throw std::invalid_argument("Invalid type");
 			else
 				type = "output";
@@ -60,8 +60,8 @@ namespace Prog3 {
 	}
 
 	void Klemm::setType(const char* tp) {
-		if (CorrectString("entrance", tp))
-			if (CorrectString("output", tp))
+		if (InCorrectString("entrance", tp))
+			if (InCorrectString("output", tp))
 				throw std::invalid_argument("Invalid type");
 			else
 				if (-1 < connection && connection < 4)
@@ -107,7 +107,7 @@ namespace Prog3 {
 			}
 	}
 
-	int operator++(Klemm& preIncr) {
+	Klemm operator++(Klemm& preIncr) {
 		int con;
 		con = preIncr.getConnection() + 1;
 		try {
@@ -117,10 +117,10 @@ namespace Prog3 {
 			std::cout << ex.what() << " because it's max!" << std::endl;
 			throw std::out_of_range("Out of range");
 		}
-		return con;
+		return preIncr;
 	}
 
-	int operator++(Klemm& postIncr, int) {
+	Klemm operator++(Klemm& postIncr, int) {
 		int con;
 		con = postIncr.getConnection();
 		try {
@@ -130,10 +130,10 @@ namespace Prog3 {
 			std::cout << ex.what() << " because it's max!" << std::endl;
 			throw std::out_of_range("Out of range");
 		}
-		return con;
+		return postIncr;
 	}
 
-	int operator--(Klemm& preDecr) {
+	Klemm operator--(Klemm& preDecr) {
 		int con;
 		con = preDecr.getConnection() - 1;
 		try {
@@ -145,10 +145,10 @@ namespace Prog3 {
 		}
 		if (con == 0)
 			preDecr.setSignal('X');
-		return con;
+		return preDecr;
 	}
 
-	int operator--(Klemm& postDecr, int) {
+	Klemm operator--(Klemm& postDecr, int) {
 		int con;
 		con = postDecr.getConnection();
 		try {
@@ -160,7 +160,7 @@ namespace Prog3 {
 		}
 		if (con == 0)
 			postDecr.setSignal('X');
-		return con;
+		return postDecr;
 	}
 
 	Error GetInt(int& a) {
@@ -173,7 +173,7 @@ namespace Prog3 {
 		return SUCCESS;
 	}
 
-	Error CorrectString(const char* str, char* eqvl) {
+	Error InCorrectString(const char* str, char* eqvl) {
 		for (int i = 0; i < strlen(eqvl); i++)
 			eqvl[i] = tolower(eqvl[i]);
 		if (!strcmp(str, eqvl))
@@ -181,7 +181,7 @@ namespace Prog3 {
 		return INCORRECT_ARGUMENT;
 	}
 
-	Error CorrectString(const char* str, const char* eqvl) {
+	Error InCorrectString(const char* str, const char* eqvl) {
 		if (!strcmp(str, eqvl))
 			return SUCCESS;
 		return INCORRECT_ARGUMENT;

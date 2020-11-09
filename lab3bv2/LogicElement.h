@@ -5,6 +5,7 @@
 #define LINE std::cout << "|----------------------------------------|" << std::endl
 
 namespace Prog3 {
+
 	class LogicElement {
 		friend ConstLogicElementIt;
 		friend std::istream& operator>>(std::istream&, LogicElement&);
@@ -49,5 +50,7 @@ namespace Prog3 {
 		void changeSpace(Klemm*& array);
 		void redefinition(LogicElement&);
 	};
+
+
 }//namespace Prog3
 #endif

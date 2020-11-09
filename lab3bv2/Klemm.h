@@ -2,6 +2,7 @@
 #define _KLEMM_H_
 #include <istream>
 
+
 namespace Prog3 {
 	enum Error {
 		SUCCESS,
@@ -12,8 +13,10 @@ namespace Prog3 {
 	class Klemm {
 		friend std::istream& operator>>(std::istream&, Klemm&);
 		friend std::ostream& operator<<(std::ostream&, const Klemm&);
-		friend Error CorrectString(const char* str, char* eqvl);
-		friend Error CorrectString(const char* str, const char* eqvl);
+		friend Klemm operator++(Klemm&);
+		friend Klemm operator++(Klemm&, int);
+		friend Klemm operator--(Klemm&);
+		friend Klemm operator--(Klemm&, int);
 	public:
 		Klemm() :type("undef"), signal('X'), connection(0) {}
 		Klemm(const char* tp, int con, char sig);
@@ -34,12 +37,8 @@ namespace Prog3 {
 		int connection;
 	};
 
-	int operator++(Klemm&);
-	int operator++(Klemm&, int);
-	int operator--(Klemm&);
-	int operator--(Klemm&, int);
-	Error CorrectString(const char* str, char* eqvl);
-	Error CorrectString(const char* str, const char* eqvl);
+	Error InCorrectString(const char* str, char* eqvl);
+	Error InCorrectString(const char* str, const char* eqvl);
 	Error GetInt(int&);
 }// namespace Prog3
 #endif

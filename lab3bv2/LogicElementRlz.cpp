@@ -72,7 +72,7 @@ namespace Prog3 {
 	std::istream& operator>>(std::istream& input, LogicElement& inEl) {
 
 		for (int i = 0; i < inEl.size; i++) {
-			if (!CorrectString(inEl.array[i].getType(), "entrance")) {
+			if (!InCorrectString(inEl.array[i].getType(), "entrance")) {
 				try {
 					input >> inEl.array[i];
 				}
@@ -92,8 +92,8 @@ namespace Prog3 {
 
 	void LogicElement::operator()(int num, char* tp, int con, char sig) {
 		int index = num - 1;
-		if (CorrectString("entrance", tp))
-			if ((CorrectString("output", tp)))
+		if (InCorrectString("entrance", tp))
+			if ((InCorrectString("output", tp)))
 				throw std::invalid_argument("Invalide type");
 			else {
 				array[index].setType(tp);
@@ -135,8 +135,8 @@ namespace Prog3 {
 
 	void LogicElement::operator()(int num, const char* tp, int con, char sig) {
 		int index = num - 1;
-		if (CorrectString("entrance", tp))
-			if ((CorrectString("output", tp)))
+		if (InCorrectString("entrance", tp))
+			if ((InCorrectString("output", tp)))
 				throw std::invalid_argument("Invalide type");
 			else {
 				array[index].setType(tp);
@@ -219,8 +219,8 @@ namespace Prog3 {
 	}
 
 	LogicElement& LogicElement::operator+=(char* tp) {
-		if (CorrectString("entrance", tp))
-			if (CorrectString("output", tp))
+		if (InCorrectString("entrance", tp))
+			if (InCorrectString("output", tp))
 				throw std::invalid_argument("Invalid type");
 			else {
 				if (size >= maxSize)
@@ -242,8 +242,8 @@ namespace Prog3 {
 	}
 
 	LogicElement& LogicElement::operator+=(Klemm& plus) {
-		if (CorrectString("entrance", plus.getType()))
-			if (CorrectString("output", plus.getType()))
+		if (InCorrectString("entrance", plus.getType()))
+			if (InCorrectString("output", plus.getType()))
 				throw std::invalid_argument("Invalid type");
 			else {
 				if (size >= maxSize)
@@ -308,7 +308,7 @@ namespace Prog3 {
 		int countZero = 0, countOne = 0, countOutZ = 0, check = -1;
 
 		for (i = 0; i < rEl.size; i++) {
-			if (!CorrectString(rEl.array[i].getType(), "entrance")) {
+			if (!InCorrectString(rEl.array[i].getType(), "entrance")) {
 				if (rEl.array[i].getSignal() == '1')
 					countOne++;
 				if (rEl.array[i].getSignal() == '0')
@@ -332,11 +332,11 @@ namespace Prog3 {
 				rEl.array[i].setSignal('X');
 			else {
 				if (check == 1) {
-					if (!CorrectString(rEl.array[i].getType(), "output"))
+					if (!InCorrectString(rEl.array[i].getType(), "output"))
 						rEl.array[i].setSignal('1');
 				}
 				else if (check == 0)
-					if (!CorrectString(rEl.array[i].getType(), "output"))
+					if (!InCorrectString(rEl.array[i].getType(), "output"))
 						rEl.array[i].setSignal('0');
 			}
 		}
