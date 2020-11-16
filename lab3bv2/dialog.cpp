@@ -3,6 +3,7 @@
 #define _CRTDBG_MAP_ALLOC
 #include<stdlib.h>
 #include<crtdbg.h>
+#include<utility>
 
 
 int main() {
@@ -14,9 +15,11 @@ int main() {
 	std::cout << copyLogicElement;
 	std::cout << eqvlLogicElement;
 	eqvlLogicElement = logicElement;
-	
-	Prog3::LogicElement::Iterator itr;
+	std::cout << eqvlLogicElement;
+	Prog3::LogicElement test(std::move(copyLogicElement));
+	std::cout << test;
 
+	Prog3::LogicElement::Iterator itr;
 	int num = 1;
 	for (itr = logicElement.begin(); itr != logicElement.end(); ++itr, num++) {
 		LINE;
@@ -26,7 +29,6 @@ int main() {
 	}
 	
 	std::cout << eqvlLogicElement;
-	Prog3::Klemm test;
 	int number, nConn, index, choice = 1;
 	char nSig;
 	int i;
